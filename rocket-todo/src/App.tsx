@@ -1,32 +1,76 @@
 // src/App.tsx
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
+
 import Todo from "./components/Todo";
 import TodoForm from "./components/TodoForm";
 import Banner from "./components/Banner";
+import { ITodo } from "./types";
+
 import "./App.css";
 
-interface ITodo {
-  text: string;
-  isCompleted: boolean;
-}
+const API_URL =
+  "https://api.rocketapi.net/public/66084edafa3ac2f4a697e4e6/66084ee8fa3ac2f4a697e4ed";
 
 const App: React.FC = () => {
-  const [todos, setTodos] = useState<ITodo[]>([
-    { text: "Learn React", isCompleted: false },
-    { text: "Build a Todo App", isCompleted: false },
-    { text: "Profit", isCompleted: false },
-  ]);
+  const [todos, setTodos] = useState<ITodo[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const addTodo = (text: string) => {
-    const newTodos = [...todos, { text, isCompleted: false }];
-    setTodos(newTodos);
-  };
+  const fetchNewTODOs = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(`${API_URL}?limit=${50}&page=1`);
 
-  const completeTodo = (index: number) => {
-    const newTodos = [...todos];
-    newTodos[index].isCompleted = !newTodos[index].isCompleted;
-    setTodos(newTodos);
-  };
+      setTodos(res.data.data.docs);
+    } catch (error) {
+      console.error(error);
+    }
+    setLoading(false);
+  }, []);
+
+  const addTodo = useCallback(
+    async (task: string) => {
+      setLoading(true);
+      try {
+        const body = {
+          task,
+          status: "yet-to-start",
+          id: (+new Date()).toString(),
+          targetTime: new Date().toISOString(),
+        };
+
+        await axios.post(`${API_URL}`, body);
+        await fetchNewTODOs();
+      } catch (error) {
+        console.error(error);
+      }
+      setLoading(false);
+    },
+    [fetchNewTODOs]
+  );
+
+  const completeTodo = useCallback(
+    async (id: number) => {
+      setLoading(true);
+      try {
+        const todo = todos.find((todo) => todo.id === id.toString());
+
+        if (todo === undefined) return;
+
+        const body = {
+          ...todo,
+          status: "complete",
+        };
+
+        await axios.put(`${API_URL}/id/${id}`, body);
+        await fetchNewTODOs();
+      } catch (error) {
+        console.error(error);
+      }
+      setLoading(false);
+    },
+    [fetchNewTODOs, todos]
+  );
 
   const removeTodo = (index: number) => {
     const newTodos = [...todos];
@@ -36,25 +80,29 @@ const App: React.FC = () => {
 
   const editTodo = (index: number, newText: string) => {
     const newTodos = [...todos];
-    newTodos[index].text = newText;
+    newTodos[index].task = newText;
     setTodos(newTodos);
   };
+
+  useEffect(() => {
+    fetchNewTODOs();
+  }, [fetchNewTODOs]);
 
   return (
     <div className="app">
       <Banner />
       <div className="todo-list">
-        {todos.map((todo, index) => (
+        {todos.map((todo) => (
           <Todo
-            key={index}
-            index={index}
+            key={todo.id}
+            index={parseInt(todo.id)}
             todo={todo}
             completeTodo={completeTodo}
             removeTodo={removeTodo}
             editTodo={editTodo}
           />
         ))}
-        <TodoForm addTodo={addTodo} />
+        <TodoForm addTodo={addTodo} loading={loading} />
       </div>
     </div>
   );

@@ -1,18 +1,6 @@
-// src/components/Todo.tsx
 import React, { useState } from "react";
 
-interface ITodoProps {
-  todo: ITodo;
-  index: number;
-  completeTodo: (index: number) => void;
-  removeTodo: (index: number) => void;
-  editTodo: (index: number, newText: string) => void;
-}
-
-interface ITodo {
-  text: string;
-  isCompleted: boolean;
-}
+import { ITodoProps } from "../types";
 
 const Todo: React.FC<ITodoProps> = ({
   todo,
@@ -22,7 +10,7 @@ const Todo: React.FC<ITodoProps> = ({
   editTodo,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [newText, setNewText] = useState(todo.text);
+  const [newText, setNewText] = useState(todo.task);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -34,7 +22,7 @@ const Todo: React.FC<ITodoProps> = ({
   };
 
   return (
-    <div className={`todo ${todo.isCompleted ? "completed" : ""}`}>
+    <div className={`todo ${todo.status === "complete" ? "completed" : ""}`}>
       {isEditing ? (
         <input
           type="text"
@@ -43,14 +31,14 @@ const Todo: React.FC<ITodoProps> = ({
           className="todo-input"
         />
       ) : (
-        <span className="todo-text">{todo.text}</span>
+        <span className="todo-text">{todo.task}</span>
       )}
       <div className="todo-buttons">
         <button
           onClick={() => completeTodo(index)}
           className="todo-button complete"
         >
-          {todo.isCompleted ? "Undo" : "Complete"}
+          {todo.status === "complete" ? "Undo" : "Complete"}
         </button>
         <button
           onClick={() => removeTodo(index)}

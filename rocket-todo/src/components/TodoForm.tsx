@@ -1,11 +1,8 @@
-// src/components/TodoForm.tsx
 import React, { useState } from "react";
 
-interface ITodoFormProps {
-  addTodo: (text: string) => void;
-}
+import { ITodoFormProps } from "../types";
 
-const TodoForm: React.FC<ITodoFormProps> = ({ addTodo }) => {
+const TodoForm: React.FC<ITodoFormProps> = ({ addTodo, loading }) => {
   const [value, setValue] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -24,8 +21,8 @@ const TodoForm: React.FC<ITodoFormProps> = ({ addTodo }) => {
         onChange={(e) => setValue(e.target.value)}
         placeholder="Add a new task..."
       />
-      <button type="submit" className="todo-button add">
-        Add Todo
+      <button type="submit" className="todo-button add" disabled={loading}>
+        {loading ? "Loading..." : "Add Todo"}
       </button>
     </form>
   );
