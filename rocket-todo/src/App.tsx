@@ -1,99 +1,35 @@
-import React, { useCallback, useState } from "react";
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-
-type TODO = {
-  id: string;
-  todo: string;
-};
-
-export default function App() {
-  const [todo, setTodo] = useState<string>("");
-  const [todos, setTodos] = useState<Array<TODO>>([]);
-
-  const handleAddTodo = useCallback(() => {
-    if (todo) {
-      setTodos((oldTodos) => [
-        ...oldTodos,
-        { id: (+new Date()).toString(), todo },
-      ]);
-      setTodo("");
-    }
-  }, [todo]);
-
-  const handleTodoChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setTodo(e.target.value);
-    },
-    []
-  );
-
-  const handleTodoDelete = useCallback(
-    (id: string) => {
-      const filteredTodos = todos.filter((todo) => todo.id !== id);
-      setTodos(filteredTodos);
-    },
-    [todos]
-  );
+function App() {
+  const [count, setCount] = useState(0)
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline">+ New TODO</Button>
-        </SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Add TODO</SheetTitle>
-            <SheetDescription>Type something to add as TODO</SheetDescription>
-          </SheetHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="name" className="text-right">
-                Name
-              </Label>
-              <Input
-                id="name"
-                value={todo}
-                onChange={handleTodoChange}
-                className="col-span-3"
-              />
-            </div>
-          </div>
-          <SheetFooter>
-            <SheetClose asChild>
-              <Button type="submit" onClick={handleAddTodo}>
-                Save TODO
-              </Button>
-            </SheetClose>
-          </SheetFooter>
-        </SheetContent>
-      </Sheet>
-
-      {todos.map((todo) => (
-        <Card key={todo.id}>
-          <CardHeader>
-            <CardTitle>{todo.todo}</CardTitle>
-          </CardHeader>
-          <CardFooter>
-            <Button onClick={() => handleTodoDelete(todo.id)}>Delete</Button>
-          </CardFooter>
-        </Card>
-      ))}
-    </ThemeProvider>
-  );
+    <>
+      <div>
+        <a href="https://vitejs.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
+  )
 }
+
+export default App
