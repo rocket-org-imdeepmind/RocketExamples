@@ -6,24 +6,26 @@
 body {
   margin: 0;
   padding: 0;
-  background: #f0f0f0;
+  background: #121212;
   font-family: Arial, sans-serif;
+  color: #e0e0e0;
 }
 
 .app {
-  background: #fff;
+  background: #1e1e1e;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  padding-top: 60px; /* Added padding to accommodate the banner */
 }
 
 .todo-list {
-  background: #fff;
+  background: #2c2c2c;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
   width: 100%;
   max-width: 400px;
 }
@@ -35,24 +37,28 @@ body {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 5px;
-  background: #f9f9f9;
+  background: #333;
   transition: background 0.3s ease;
 }
 
 .todo.completed {
-  background: #d4edda;
+  background: #4a4a4a;
+  text-decoration: line-through;
 }
 
 .todo-input {
   flex: 1;
   padding: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #555;
   border-radius: 5px;
+  background: #555;
+  color: #e0e0e0;
 }
 
 .todo-text {
   flex: 1;
   padding: 5px;
+  color: #e0e0e0;
 }
 
 .todo-buttons {
@@ -66,31 +72,27 @@ body {
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s ease;
+  color: #fff;
 }
 
 .todo-button.complete {
   background: #28a745;
-  color: #fff;
 }
 
 .todo-button.delete {
   background: #dc3545;
-  color: #fff;
 }
 
 .todo-button.edit {
   background: #ffc107;
-  color: #fff;
 }
 
 .todo-button.save {
   background: #007bff;
-  color: #fff;
 }
 
 .todo-button.add {
   background: #007bff;
-  color: #fff;
   width: 100%;
   padding: 10px;
   margin-top: 10px;
@@ -108,6 +110,30 @@ body {
 .todo-input {
   padding: 10px;
   margin-bottom: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #555;
   border-radius: 5px;
+  background: #555;
+  color: #e0e0e0;
+}
+
+/* src/components/Banner.css */
+.banner {
+  width: 100%;
+  background: #333;
+  color: #e0e0e0;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+.banner a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.banner a:hover {
+  text-decoration: underline;
 }

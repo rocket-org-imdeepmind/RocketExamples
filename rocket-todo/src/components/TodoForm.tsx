@@ -1,11 +1,11 @@
 // src/components/TodoForm.tsx
 import React, { useState } from "react";
 
-interface TodoFormProps {
+interface ITodoFormProps {
   addTodo: (text: string) => void;
 }
 
-const TodoForm: React.FC<TodoFormProps> = ({ addTodo }) => {
+const TodoForm: React.FC<ITodoFormProps> = ({ addTodo }) => {
   const [value, setValue] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {

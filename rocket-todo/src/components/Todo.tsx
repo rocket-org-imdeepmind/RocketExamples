@@ -1,20 +1,20 @@
 // src/components/Todo.tsx
 import React, { useState } from "react";
 
-interface TodoProps {
-  todo: Todo;
+interface ITodoProps {
+  todo: ITodo;
   index: number;
   completeTodo: (index: number) => void;
   removeTodo: (index: number) => void;
   editTodo: (index: number, newText: string) => void;
 }
 
-interface Todo {
+interface ITodo {
   text: string;
   isCompleted: boolean;
 }
 
-const Todo: React.FC<TodoProps> = ({
+const Todo: React.FC<ITodoProps> = ({
   todo,
   index,
   completeTodo,

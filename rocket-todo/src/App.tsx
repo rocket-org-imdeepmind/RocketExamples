@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import Todo from "./components/Todo";
 import TodoForm from "./components/TodoForm";
+import Banner from "./components/Banner";
 import "./App.css";
 
 interface ITodo {
@@ -41,6 +42,7 @@ const App: React.FC = () => {
 
   return (
     <div className="app">
+      <Banner />
       <div className="todo-list">
         {todos.map((todo, index) => (
           <Todo
