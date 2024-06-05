@@ -59,7 +59,7 @@ const App: React.FC = () => {
 
         const body = {
           ...todo,
-          status: "complete",
+          status: todo.status === "complete" ? "yet-to-start" : "complete",
         };
 
         await axios.put(`${API_URL}/id/${id}`, body);
@@ -72,17 +72,42 @@ const App: React.FC = () => {
     [fetchNewTODOs, todos]
   );
 
-  const removeTodo = (index: number) => {
-    const newTodos = [...todos];
-    newTodos.splice(index, 1);
-    setTodos(newTodos);
-  };
+  const removeTodo = useCallback(
+    async (id: number) => {
+      setLoading(true);
+      try {
+        await axios.delete(`${API_URL}/id/${id}`);
+        await fetchNewTODOs();
+      } catch (error) {
+        console.error(error);
+      }
+      setLoading(false);
+    },
+    [fetchNewTODOs]
+  );
 
-  const editTodo = (index: number, newText: string) => {
-    const newTodos = [...todos];
-    newTodos[index].task = newText;
-    setTodos(newTodos);
-  };
+  const editTodo = useCallback(
+    async (id: number, text: string) => {
+      setLoading(true);
+      try {
+        const todo = todos.find((todo) => todo.id === id.toString());
+
+        if (todo === undefined) return;
+
+        const body = {
+          ...todo,
+          task: text,
+        };
+
+        await axios.put(`${API_URL}/id/${id}`, body);
+        await fetchNewTODOs();
+      } catch (error) {
+        console.error(error);
+      }
+      setLoading(false);
+    },
+    [fetchNewTODOs, todos]
+  );
 
   useEffect(() => {
     fetchNewTODOs();
